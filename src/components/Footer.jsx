@@ -1,0 +1,31 @@
+import React from 'react'
+
+const Footer = ({ completedTasksCount = 0, activeTasksCount = 0}) => {
+  return (
+    <div>
+      <>
+        { completedTasksCount + activeTasksCount > 0 && (
+          <div className='text-center'>
+            <p className='text-sm text-muted-foreground'>
+              { completedTasksCount > 0 && (
+                <>
+                  🎉 Good job! You have completed {completedTasksCount} tasks, {
+                    activeTasksCount > 0 && `Just ${activeTasksCount} more to go!`
+                  } 
+                </>
+              )}
+
+              { completedTasksCount === 0 && activeTasksCount > 0 && (
+                <>
+                  🚀 Let's get started! You have {activeTasksCount} tasks to complete.
+                </>
+              )}
+            </p>
+          </div>
+        )}
+      </>
+    </div>
+  )
+}
+
+export default Footer
