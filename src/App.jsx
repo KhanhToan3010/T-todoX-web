@@ -8,7 +8,7 @@ import NotFoundPage from './pages/NotFoundPage.jsx'
 function App() {
   return (
     <> 
-      <Toaster
+      <Toaster richColors={true}
         position="top-right"
         toastOptions={{
           className: 'toast-style',
