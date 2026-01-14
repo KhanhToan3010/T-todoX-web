@@ -4,10 +4,24 @@ import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import { Calendar, CheckCircle2, Circle, SquarePen, Trash2 } from 'lucide-react';
 import { Input } from './ui/input';
+import instance from '@/lib/axios';
+import { toast } from 'sonner';
 
-const TaskCard = ({ task, index }) => {
+const TaskCard = ({ task, index, handleTaskChanged }) => {
 
   let isEditing = false;
+
+  const deleteTask = async (taskId) => {
+    try {
+      await instance.delete(`/tasks/${taskId}`)
+      toast.success('Task deleted successfully')
+      handleTaskChanged()
+      
+    } catch (error) {
+      console.error("Error deleting task:", error)
+      toast.error("Error deleting task")
+    }
+  }
 
   return (
    <Card className={cn(
@@ -91,6 +105,7 @@ const TaskCard = ({ task, index }) => {
           variant='ghost'
           size='icon'
           className='transition-colors flex-shirnk-0 size-8 text-muted-foreground hover:text-destructive'
+          onClick={() => deleteTask(task._id)}
          >
           <Trash2 className='size-4' />
          </Button>
