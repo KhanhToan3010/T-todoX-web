@@ -7,13 +7,13 @@ import TaskList from '@/components/TaskList'
 import TaskListPagination from '@/components/TaskListPagination'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import axios from 'axios'
+import instance from '@/lib/axios'
 
 const HomePage = () => {
 
   const [taskBuffer, setTaskBuffer] = useState([])
   const [activeTasksCount, setActiveTasksCount] = useState(0)
-  const [completedTasksCount, setCompletedTasksCount] = useState(0)
+  const [completeTasksCount, setCompleteTasksCount] = useState(0)
   const [filter, setFilter] = useState('ALL')
 
   useEffect(() => {
@@ -22,10 +22,10 @@ const HomePage = () => {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get('http://localhost:5001/api/tasks')
+      const res = await instance.get('/tasks')
       setTaskBuffer(res.data.tasks)
       setActiveTasksCount(res.data.activeCount)
-      setCompletedTasksCount(res.data.completeCount)
+      setCompleteTasksCount(res.data.completeCount)
       console.log(" Tasks fetched successfully: ", res.data)
       
     } catch (error) {
@@ -43,33 +43,36 @@ const HomePage = () => {
       return task.status === 'completed'
     }
   })
-  return (
-    <div className="relative w-full min-h-screen bg-white">
-  {/* Dual Gradient Overlay Swapped Background */}
-  <div
-    className="absolute inset-0 z-0"
-    style={{
-      backgroundImage: `
-        linear-gradient(to right, rgba(229,231,235,0.8) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(229,231,235,0.8) 1px, transparent 1px),
-        radial-gradient(circle 500px at 20% 20%, rgba(139,92,246,0.3), transparent),
-        radial-gradient(circle 500px at 80% 80%, rgba(59,130,246,0.3), transparent)
-      `,
-      backgroundSize: "48px 48px, 48px 48px, 100% 100%, 100% 100%",
-    }}
-  />
-     {/* Your Content/Components */}
 
-     <div className='container relative z-10 pt-8 mx-auto'>
+  const handleTaskChanged = () => {
+    fetchTasks()
+  }
+  return (
+    <div className="min-h-screen w-full bg-[#020617] relative">
+    {/* Magenta Orb Grid Background */}
+    <div
+      className="absolute inset-0 z-0"
+      style={{
+        background: "#020617",
+        backgroundImage: `
+          linear-gradient(to right, rgba(71,85,105,0.15) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(71,85,105,0.15) 1px, transparent 1px),
+          radial-gradient(circle at 50% 60%, rgba(236,72,153,0.15) 0%, rgba(168,85,247,0.05) 40%, transparent 70%)
+        `,
+        backgroundSize: "40px 40px, 40px 40px, 100% 100%",
+      }}
+    />
+  {/* Your Content/Components */}
+  <div className='container relative z-10 pt-8 mx-auto'>
      <div className='w-full max-w-2xl p-6 mx-auto space-y-6'>
 
       <Header />
-      <AddTask />
+      <AddTask handleNewTaskAdded = {handleTaskChanged} />
       <StatsAndFilters 
         filter={filter}
         setFilter={setFilter}
         activeTasksCount={activeTasksCount} 
-        completedTasksCount={completedTasksCount}
+        completedTasksCount={completeTasksCount}
        />
       <TaskList filteredTasks={filteredTasks} filter={filter} />
       {/* Phân trang và lọc theo ngày */}
@@ -79,13 +82,12 @@ const HomePage = () => {
       </div>
       <Footer 
         activeTasksCount={activeTasksCount} 
-        completedTasksCount={completedTasksCount}
+        completedTasksCount={completeTasksCount}
        />
 
      </div>
     </div>
 </div>
-   
   )
 }
 

@@ -12,14 +12,14 @@ const StatsAndFilters = ({ completedTasksCount = 0, activeTasksCount = 0, filter
       <div className='flex gap-3'>
         <Badge
           variant= 'secondary'
-          className='bg-white/50 text-accent-foreground border-info/20'
+          className='bg-white text-accent-foreground border-info/20'
         >
           {activeTasksCount} {FilterType.ACTIVE}
         </Badge>
 
         <Badge
           variant= 'secondary'
-          className='bg-white/50 text-accent-foreground border-success/20'
+          className='bg-white text-accent-foreground border-success/20'
         >
           {completedTasksCount} {FilterType.COMPLETED}
         </Badge>
