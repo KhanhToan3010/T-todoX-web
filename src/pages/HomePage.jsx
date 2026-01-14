@@ -44,6 +44,8 @@ const HomePage = () => {
     }
   })
 
+
+
   const handleTaskChanged = () => {
     fetchTasks()
   }
@@ -74,7 +76,11 @@ const HomePage = () => {
         activeTasksCount={activeTasksCount} 
         completedTasksCount={completeTasksCount}
        />
-      <TaskList filteredTasks={filteredTasks} filter={filter} />
+      <TaskList 
+        filteredTasks={filteredTasks}
+        filter={filter}
+        handleTaskChanged={handleTaskChanged}
+         />
       {/* Phân trang và lọc theo ngày */}
       <div className='flex flex-col items-center justify-center gap-6 sm:flex-row'>
        <TaskListPagination />
