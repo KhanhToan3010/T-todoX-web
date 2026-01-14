@@ -23,12 +23,12 @@ const TaskCard = ({ task, index }) => {
         size='icon'
         className={cn(
           "flex-shirnk-0 size-8 rounded-full transition-all duration-200 ",
-          task.status === 'complete'
+          task.status === 'completed'
             ? "text-success hover:text-success/80"
             : "text-muted-foreground hover:text-primary"
         )}
       >
-        { task.status === 'complete' ? (
+        { task.status === 'completed' ? (
           <CheckCircle2 className='size-5' />
         ) : (
           <Circle className='size-5' />
@@ -47,7 +47,7 @@ const TaskCard = ({ task, index }) => {
           <p
             className= {cn(
               "text-base transition-all duration-200",
-              task.status === 'complete'
+              task.status === 'completed'
                 ? "line-through text-muted-foreground"
                 : "text-foreground"
             )}
