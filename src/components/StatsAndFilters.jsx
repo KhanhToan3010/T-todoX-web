@@ -4,7 +4,7 @@ import { FilterType } from '@/lib/data'
 import { Button } from './ui/button'
 import { Filter } from 'lucide-react'
 
-const StatsAndFilters = ({ completedTasksCount = 0, activeTasksCount = 0, filter = "ALL", setFilter }) => {
+const StatsAndFilters = ({ completeTasksCount = 0, activeTasksCount = 0, filter = "ALL", setFilter }) => {
   return (
     <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
 
@@ -21,7 +21,7 @@ const StatsAndFilters = ({ completedTasksCount = 0, activeTasksCount = 0, filter
           variant= 'secondary'
           className='bg-white text-accent-foreground border-success/20'
         >
-          {completedTasksCount} {FilterType.COMPLETED}
+          {completeTasksCount} {FilterType.COMPLETED}
         </Badge>
       </div>
 
