@@ -35,12 +35,20 @@ const HomePage = () => {
   }
 
   const filteredTasks = taskBuffer.filter((task) => {
-    if (filter === 'ALL') {
-      return true
-    } else if (filter === 'ACTIVE') {
-      return task.status === 'active'
-    } else if (filter === 'COMPLETED') {
-      return task.status === 'completed'
+    // if (filter === 'ALL') {
+    //   return true
+    // } else if (filter === 'ACTIVE') {
+    //   return task.status === 'active'
+    // } else if (filter === 'COMPLETED') {
+    //   return task.status === 'completed'
+    // }
+    switch (filter) {
+      case 'ACTIVE': 
+        return task.status === 'active'
+      case 'COMPLETED':
+        return task.status === 'completed'
+      default: 
+        return true
     }
   })
 
@@ -74,7 +82,7 @@ const HomePage = () => {
         filter={filter}
         setFilter={setFilter}
         activeTasksCount={activeTasksCount} 
-        completedTasksCount={completeTasksCount}
+        completeTasksCount={completeTasksCount}
        />
       <TaskList 
         filteredTasks={filteredTasks}
@@ -82,13 +90,13 @@ const HomePage = () => {
         handleTaskChanged={handleTaskChanged}
          />
       {/* Phân trang và lọc theo ngày */}
-      <div className='flex flex-col items-center justify-center gap-6 sm:flex-row'>
+      <div className='flex flex-col items-center justify-between gap-6 sm:flex-row '>
        <TaskListPagination />
        <DateTimeFilter />
       </div>
       <Footer 
         activeTasksCount={activeTasksCount} 
-        completedTasksCount={completeTasksCount}
+        completeTasksCount={completeTasksCount}
        />
 
      </div>
