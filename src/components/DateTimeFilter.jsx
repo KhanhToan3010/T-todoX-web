@@ -17,9 +17,8 @@ import {
 } from "@/components/ui/popover"
 import { options } from "@/lib/data"
 
-const DateTimeFilter = () => {
+const DateTimeFilter = ({ dateQuery, setDateQuery }) => {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -31,7 +30,11 @@ const DateTimeFilter = () => {
           aria-expanded={open}
           
         >
-          Today
+          {
+            dateQuery
+            ? options.find((option) => option.value === dateQuery)?.label
+            : options[0].label
+          }
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -46,7 +49,7 @@ const DateTimeFilter = () => {
                   key={option.value}
                   value={option.value}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
+                    setDateQuery(currentValue)
                     setOpen(false)
                   }}
                 >
@@ -54,7 +57,7 @@ const DateTimeFilter = () => {
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === option.value ? "opacity-100" : "opacity-0"
+                      dateQuery === option.value ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>
