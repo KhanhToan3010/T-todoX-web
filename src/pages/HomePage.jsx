@@ -15,14 +15,15 @@ const HomePage = () => {
   const [activeTasksCount, setActiveTasksCount] = useState(0)
   const [completeTasksCount, setCompleteTasksCount] = useState(0)
   const [filter, setFilter] = useState('ALL')
+  const [dateQuery, setDateQuery] = useState('today')
 
   useEffect(() => {
     fetchTasks()
-  }, [])
+  }, [dateQuery])
 
   const fetchTasks = async () => {
     try {
-      const res = await instance.get('/tasks')
+      const res = await instance.get('/tasks?filter=' + dateQuery)
       setTaskBuffer(res.data.tasks)
       setActiveTasksCount(res.data.activeCount)
       setCompleteTasksCount(res.data.completeCount)
@@ -92,7 +93,7 @@ const HomePage = () => {
       {/* Phân trang và lọc theo ngày */}
       <div className='flex flex-col items-center justify-between gap-6 sm:flex-row '>
        <TaskListPagination />
-       <DateTimeFilter />
+       <DateTimeFilter dateQuery={dateQuery} setDateQuery={setDateQuery} />
       </div>
       <Footer 
         activeTasksCount={activeTasksCount} 
