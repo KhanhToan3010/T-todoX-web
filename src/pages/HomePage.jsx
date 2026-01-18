@@ -5,9 +5,10 @@ import Header from '@/components/Header'
 import StatsAndFilters from '@/components/StatsAndFilters'
 import TaskList from '@/components/TaskList'
 import TaskListPagination from '@/components/TaskListPagination'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import instance from '@/lib/axios'
+import { visibleTaskLimit } from '@/lib/data'
 
 const HomePage = () => {
 
@@ -16,10 +17,15 @@ const HomePage = () => {
   const [completeTasksCount, setCompleteTasksCount] = useState(0)
   const [filter, setFilter] = useState('ALL')
   const [dateQuery, setDateQuery] = useState('today')
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     fetchTasks()
   }, [dateQuery])
+
+  useEffect(() => {
+    setPage(1)
+  }, [filter, dateQuery])
 
   const fetchTasks = async () => {
     try {
@@ -53,11 +59,36 @@ const HomePage = () => {
     }
   })
 
-
-
   const handleTaskChanged = () => {
     fetchTasks()
   }
+
+  const handleNext = () => {
+    if(page < totalPages) {
+      setPage((prev) => prev + 1)
+    }
+  }
+
+  const handlePrev = () => {
+    if(page > 1) {
+      setPage(prev => prev - 1)
+    }
+  }
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage)
+  }
+
+  const visibleTasks = filteredTasks.slice(
+    (page - 1) * visibleTaskLimit,
+    page * visibleTaskLimit
+  )
+
+  if (visibleTasks.length === 0) {
+      handlePrev()
+  }
+
+  const totalPages = Math.ceil(filteredTasks.length / visibleTaskLimit)
   return (
     <div className="min-h-screen w-full bg-[#020617] relative">
     {/* Magenta Orb Grid Background */}
@@ -86,13 +117,19 @@ const HomePage = () => {
         completeTasksCount={completeTasksCount}
        />
       <TaskList 
-        filteredTasks={filteredTasks}
+        filteredTasks={visibleTasks}
         filter={filter}
         handleTaskChanged={handleTaskChanged}
          />
       {/* Phân trang và lọc theo ngày */}
       <div className='flex flex-col items-center justify-between gap-6 sm:flex-row '>
-       <TaskListPagination />
+       <TaskListPagination 
+        page={page}
+        totalPages={totalPages}
+        handleNext={handleNext}
+        handlePrev={handlePrev}
+        handlePageChange={handlePageChange}
+       />
        <DateTimeFilter dateQuery={dateQuery} setDateQuery={setDateQuery} />
       </div>
       <Footer 
